@@ -6,12 +6,12 @@ export const Circle = () => {
 
 
   function draw(){
-    if(ref){
+    if(ref.current){
       var object = new fabric.Circle({
         radius: 15,
-        fill: 'blue',
-        left: 100,
-        top: 100
+        fill: '',
+        stroke: 'green',
+        strokeWidth: 3
       });
       ref.current.add(object); 
     }
