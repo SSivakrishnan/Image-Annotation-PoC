@@ -2,6 +2,7 @@ import React,{useState, useEffect, useRef} from 'react';
 import { fabric } from 'fabric';
 import { AnnotationToolbar } from './tools';
 import { useStore } from './store';
+import FloatingToolbar from '../FloatingToolbar';
 
 export const ImageAnnotation = () => {
   const canvasRef = useRef(null);
@@ -23,6 +24,7 @@ export const ImageAnnotation = () => {
     }}>
       <AnnotationToolbar />
       <canvas ref={canvasRef} />
+      <FloatingToolbar objectType={"text"}/>
       </div>
   )
 }
