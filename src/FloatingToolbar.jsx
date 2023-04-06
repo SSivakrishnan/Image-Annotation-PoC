@@ -143,8 +143,8 @@ function FillColor(){
     const [fillColor,setFillColor] = useState(false)
 
     const colorPicking = (color) =>{
-        setSelectedColor(color.hex);
-        activeObject.set("fill", activeObject.stroke);
+        setFillColor(color.hex);
+        activeObject.set("fill", color.hex);
         fabricCanvasRef.current.renderAll();
     }
     return <div style={{position :'relative'}}>
@@ -227,7 +227,7 @@ function FontColor(){
 }
 function BackgroundColor(){
     let {fabricCanvasRef,activeObject} = useStore((state)=>state);
-    
+
     const [open,setOpen] = useState(false)
 
     const [backgroundColor,seBackgroundtColor] = useState()
