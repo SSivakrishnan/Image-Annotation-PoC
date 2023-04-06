@@ -9,7 +9,7 @@ function FloatingToolbar({objectType}) {
 
     const menuRef = useRef(null);
 
-    
+
 
     useEffect(()=>{
         console.log(":::::::::",activeObject?.top,menuRef)
@@ -99,19 +99,23 @@ function LineColor(){
 function LineWidth(){
     let {fabricCanvasRef,activeObject} = useStore((state)=>state);
 
+    const [lineWidth,setLineWidth] = useState(1)
+
     const [open,setOpen] = useState(false)
 
-    const handleFontSizeChange = () =>{
-       
+    const handleFontSizeChange = (e) =>{
+        setLineWidth(Number(e.target.value))
+       activeObject.set("strokeWidth", Number(e.target.value));
+       fabricCanvasRef.current.renderAll();
     }
     return <div style={{position :'relative'}}>
-    <button onClick={()=>{setOpen(!open)}}>LineSize</button>
+    <button onClick={()=>{setOpen(!open)}}>LineWidth</button>
     {
         open && (
             <div
             style={{ position: "absolute" }}>
             <input
-                //value={fontSize}
+                 value={lineWidth}
                 onChange={handleFontSizeChange}
                 type="number"
               ></input>
@@ -132,18 +136,25 @@ function Delete(){
     return <button onClick={deleteObject}>Delete</button>
 }
 function FillColor(){
+    let {fabricCanvasRef,activeObject} = useStore((state)=>state);
+
     const [open,setOpen] = useState(false)
 
-    const colorPicking = () =>{
+    const [fillColor,setFillColor] = useState(false)
 
+    const colorPicking = (color) =>{
+        setSelectedColor(color.hex);
+        activeObject.set("fill", activeObject.stroke);
+        fabricCanvasRef.current.renderAll();
     }
     return <div style={{position :'relative'}}>
-    <button onClick={()=>{setOpen(!open)}}>FontColor</button>
+    <button onClick={()=>{setOpen(!open)}}>FillColor</button>
     {
         open && (
             <div
             style={{ position: "absolute" }}>
             <SketchPicker
+            color={fillColor}
             onChangeComplete={colorPicking}
             />
             </div>
@@ -154,10 +165,17 @@ function FillColor(){
     </div>
 }
 function FontSize(){
+    let {fabricCanvasRef,activeObject} = useStore((state)=>state);
+
+
     const [open,setOpen] = useState(false)
 
-    const handleFontSizeChange = () =>{
+    const [fontSize,setfontSize] = useState(10)
 
+    const handleFontSizeChange = () =>{
+        setfontSize(Number(e.target.value))
+        activeObject.set("fontSize", Number(e.target.value));
+        fabricCanvasRef.current.renderAll();
     }
     return <div style={{position :'relative'}}>
     <button onClick={()=>{setOpen(!open)}}>FontSize</button>
@@ -166,7 +184,7 @@ function FontSize(){
             <div
             style={{ position: "absolute" }}>
             <input
-                //value={fontSize}
+                value={fontSize}
                 onChange={handleFontSizeChange}
                 type="number"
               ></input>
@@ -178,10 +196,17 @@ function FontSize(){
     </div>
 }
 function FontColor(){
+    let {fabricCanvasRef,activeObject} = useStore((state)=>state);
+
     const [open,setOpen] = useState(false)
 
-    const colorPicking = () =>{
+    const [fontColor,setFontColor] = useState()
 
+    const colorPicking = (color) =>{
+        setFontColor(color.hex)
+        activeObject.set("stroke", color.hex);
+        activeObject.set("fill", color.hex);
+        fabricCanvasRef.current.renderAll();
     }
     return <div style={{position :'relative'}}>
     <button onClick={()=>{setOpen(!open)}}>FontColor</button>
@@ -190,6 +215,7 @@ function FontColor(){
             <div
             style={{ position: "absolute" }}>
             <SketchPicker
+            color={fontColor}
             onChangeComplete={colorPicking}
             />
             </div>
@@ -200,10 +226,17 @@ function FontColor(){
     </div>
 }
 function BackgroundColor(){
+    let {fabricCanvasRef,activeObject} = useStore((state)=>state);
+    
     const [open,setOpen] = useState(false)
 
-    const colorPicking = () =>{
+    const [backgroundColor,seBackgroundtColor] = useState()
 
+    const colorPicking = (color) =>{
+        seBackgroundtColor(color.hex)
+        activeObject.set("stroke", color.hex);
+        activeObject.set("fill", color.hex);
+        fabricCanvasRef.current.renderAll();
     }
     return <div style={{position :'relative'}}>
     <button onClick={()=>{setOpen(!open)}}>BackgroundColor</button>
@@ -212,6 +245,7 @@ function BackgroundColor(){
             <div
             style={{ position: "absolute" }}>
             <SketchPicker
+             color={backgroundColor}
             onChangeComplete={colorPicking}
             />
             </div>
