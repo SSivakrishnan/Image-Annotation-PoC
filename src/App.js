@@ -1,8 +1,11 @@
 import React from 'react'
+import FloatingToolbar from './FloatingToolbar'
 
 function App() {
   return (
-    <div>App</div>
+    <div>
+      <FloatingToolbar objectType={"text"}/>
+    </div>
   )
 }
 
