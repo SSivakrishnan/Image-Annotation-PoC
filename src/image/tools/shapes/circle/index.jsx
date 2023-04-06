@@ -8,12 +8,21 @@ export const Circle = () => {
   function draw(){
     if(ref){
       var object = new fabric.Circle({
-        radius: 15,
-        fill: 'blue',
-        left: 100,
-        top: 100
+        top: 0,
+        left: 50,
+        radius: 25,
+        fill: "rgba(255,0,0,0.0)",
+        stroke: "red",
+        strokeWidth: 3,
+        transparentCorners: false,
+        borderColor: "rgb(255,255,255)",
+        cornerColor: "rgb(255,255,255)",
+        cornerStyle: "circle",
+        objectType: "circle"
       });
       ref.current.add(object); 
+      object.center();
+      object.setCoords();
     }
   }
 
