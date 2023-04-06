@@ -8,7 +8,7 @@ export const Pen = () => {
   function draw(){
     if(ref){
       console.info('===> drawing',ref.current)
-      ref.current.isDrawingMode=true;
+      ref.current.isDrawingMode= !ref.current.isDrawingMode;
       ref.current.renderAll();
     }
   }
