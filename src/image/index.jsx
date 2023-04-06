@@ -1,4 +1,4 @@
-import React,{useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import { fabric } from 'fabric';
 import { AnnotationToolbar } from './tools';
 import { useStore } from './store';
@@ -7,15 +7,15 @@ import FloatingToolbar from '../FloatingToolbar';
 export const ImageAnnotation = () => {
   const canvasRef = useRef(null);
   
-  let fc = useStore((state)=>state.fabricCanvas);
+  let {setFabricCanvasRef}= useStore((state)=>state);
 
   useEffect(
     ()=>{
-    let canvas = new fabric.Canvas(canvasRef.current, {height: 500,width: 600,backgroundColor: '#292D37',
-   objectCaching:false
-  });
-    useStore.getState().setFabricCanvas(canvas)
-  },[canvasRef]);
+      if(!canvasRef.current){
+        canvasRef.current = new fabric.Canvas("canvas", {height: 500,width: 600,backgroundColor: '#292D37'});
+        setFabricCanvasRef(canvasRef)
+      }
+  },[]);
 
   return (
     <div style={{
@@ -23,7 +23,7 @@ export const ImageAnnotation = () => {
       flexDirection:'column'
     }}>
       <AnnotationToolbar />
-      <canvas ref={canvasRef} />
+      <canvas id="canvas"/>
       <FloatingToolbar objectType={"text"}/>
       </div>
   )
