@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 
 export const useStore = create((set) => ({
-  fabricCanvas: {},
-  setFabricCanvas: (val) => set((state) =>({fabricCanvas:{...state.fabricCanvas,...val}})),
+  fabricCanvasRef:null,
+  setFabricCanvasRef:(val)=>set(()=>({fabricCanvasRef:val}))
 }))
 
