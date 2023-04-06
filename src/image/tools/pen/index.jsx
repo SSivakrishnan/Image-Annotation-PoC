@@ -1,5 +1,15 @@
-export const Pen = ({setCanvas}) => {
+import { useStore } from "../../store"
+export const Pen = () => {
+  let fc = useStore((state)=>state.fabricCanvas);
+
+  function draw(){
+    console.info('===> drawing')
+    useStore.getState().setFabricCanvas({
+      isDrawingMode:true
+    })
+  }
+
   return (
-    <button>Pen</button>
+    <button onClick={draw}>Pen</button>
   )
 }
