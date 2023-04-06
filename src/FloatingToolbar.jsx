@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Button, Popover } from 'antd';
+import { SketchPicker } from "react-color";
 
 function FloatingToolbar({objectType}) {
 
@@ -13,36 +15,154 @@ function FloatingToolbar({objectType}) {
     }
 
   return (
-    <div>
-        {
-            objectList[objectType].map(comp => (
-                <>{comp}</>
-            ))
-        }
-    </div>
+    <Popover open={objectType} content={<div style={{ display:'flex'}}>{
+        objectList[objectType].map(comp => (
+            <>{comp}</>
+        ))
+    }</div>}>
+        
+    </Popover>
   )
 }
 
 export default FloatingToolbar
 
 function LineColor(){
-    return <button>LineColor</button>
+    const [open,setOpen] = useState(false)
+
+    const colorPicking = () =>{
+
+    }
+    return <div style={{position :'relative'}}>
+    <button onClick={()=>{setOpen(!open)}}>FontColor</button>
+    {
+        open && (
+            <div
+            style={{ position: "absolute" }}>
+            <SketchPicker
+            onChangeComplete={colorPicking}
+            />
+            </div>
+            
+
+        )
+    }
+    </div>
 }
 function LineWidth(){
-    return <button>LineWidth</button>
+    const [open,setOpen] = useState(false)
+
+    const handleFontSizeChange = () =>{
+
+    }
+    return <div style={{position :'relative'}}>
+    <button onClick={()=>{setOpen(!open)}}>FontSize</button>
+    {
+        open && (
+            <div
+            style={{ position: "absolute" }}>
+            <input
+                //value={fontSize}
+                onChange={handleFontSizeChange}
+                type="number"
+              ></input>
+            </div>
+            
+
+        )
+    }
+    </div>
 }
 function Delete(){
     return <button>Delete</button>
 }
 function FillColor(){
-    return <button>FillColor</button>
+    const [open,setOpen] = useState(false)
+
+    const colorPicking = () =>{
+
+    }
+    return <div style={{position :'relative'}}>
+    <button onClick={()=>{setOpen(!open)}}>FontColor</button>
+    {
+        open && (
+            <div
+            style={{ position: "absolute" }}>
+            <SketchPicker
+            onChangeComplete={colorPicking}
+            />
+            </div>
+            
+
+        )
+    }
+    </div>
 }
 function FontSize(){
-    return <button>FontSize</button>
+    const [open,setOpen] = useState(false)
+
+    const handleFontSizeChange = () =>{
+
+    }
+    return <div style={{position :'relative'}}>
+    <button onClick={()=>{setOpen(!open)}}>FontSize</button>
+    {
+        open && (
+            <div
+            style={{ position: "absolute" }}>
+            <input
+                //value={fontSize}
+                onChange={handleFontSizeChange}
+                type="number"
+              ></input>
+            </div>
+            
+
+        )
+    }
+    </div>
 }
 function FontColor(){
-    return <button>FontColor</button>
+    const [open,setOpen] = useState(false)
+
+    const colorPicking = () =>{
+
+    }
+    return <div style={{position :'relative'}}>
+    <button onClick={()=>{setOpen(!open)}}>FontColor</button>
+    {
+        open && (
+            <div
+            style={{ position: "absolute" }}>
+            <SketchPicker
+            onChangeComplete={colorPicking}
+            />
+            </div>
+            
+
+        )
+    }
+    </div>
 }
 function BackgroundColor(){
-    return <button>BackgroundColor</button>
+    const [open,setOpen] = useState(false)
+
+    const colorPicking = () =>{
+
+    }
+    return <div style={{position :'relative'}}>
+    <button onClick={()=>{setOpen(!open)}}>BackgroundColor</button>
+    {
+        open && (
+            <div
+            style={{ position: "absolute" }}>
+            <SketchPicker
+            onChangeComplete={colorPicking}
+            />
+            </div>
+            
+
+        )
+    }
+    </div>
 }
