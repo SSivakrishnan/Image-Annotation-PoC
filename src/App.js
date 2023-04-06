@@ -1,11 +1,9 @@
 import React from 'react'
-import FloatingToolbar from './FloatingToolbar'
+import { ImageAnnotation } from './image'
 
 function App() {
   return (
-    <div>
-      <FloatingToolbar objectType={"text"}/>
-    </div>
+    <ImageAnnotation />
   )
 }
 
