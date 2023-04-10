@@ -1,32 +1,32 @@
 import React, {useState} from "react";
 import { fabric } from "fabric";
 import { useStore } from "../../../store"
-export const Circle = () => {
+export const Square = () => {
   let ref = useStore((state)=>state.fabricCanvasRef);
 
 
   function draw(){
     if(ref.current){
-      var object = new fabric.Circle({
+      const box = new fabric.Rect({
+        width: 100,
+        height: 100,
         top: 0,
         left: 50,
-        radius: 25,
-        fill: "rgba(255,0,0,0.0)",
+        fill: "rgba(0,0,0,0.0)",
         stroke: "red",
         strokeWidth: 3,
         transparentCorners: false,
         borderColor: "rgb(255,255,255)",
         cornerColor: "rgb(255,255,255)",
-        cornerStyle: "circle",
-        objectType: "circle"
+        cornerStyle: "circle"
       });
-      ref.current.add(object); 
-      object.center();
-      object.setCoords();
+      ref.current.add(box);
+      box.center();
+      box.setCoords();
     }
   }
 
   return (
-    <button onClick={draw}>Circle</button>
+    <button onClick={draw}>Square</button>
   )
 }
