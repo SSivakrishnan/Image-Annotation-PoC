@@ -188,9 +188,9 @@ function FontSize(){
 
     const [open,setOpen] = useState(false)
 
-    const [fontSize,setfontSize] = useState(10)
+    const [fontSize,setfontSize] = useState(20)
 
-    const handleFontSizeChange = () =>{
+    const handleFontSizeChange = (e) =>{
         setfontSize(Number(e.target.value))
         activeObject.set("fontSize", Number(e.target.value));
         fabricCanvasRef.current.renderAll();

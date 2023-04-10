@@ -8,7 +8,7 @@ export const Textbox = () => {
   function draw(){
     if(ref.current){
       var object = new fabric.Textbox("Text Area", {
-        width: 450,
+        width: 100,
         fontSize: 20,
         transparentCorners: false,
         borderColor: "rgb(255,255,255)",
