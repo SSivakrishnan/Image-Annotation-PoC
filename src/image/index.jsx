@@ -41,7 +41,7 @@ export const ImageAnnotation = () => {
     }}>
       <AnnotationToolbar />
       <canvas id="canvas"/>
-      <FloatingToolbar objectType={"circle"}/>
+      <FloatingToolbar/>
       </div>
   )
 }

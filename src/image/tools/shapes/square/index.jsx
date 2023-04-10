@@ -18,7 +18,8 @@ export const Square = () => {
         transparentCorners: false,
         borderColor: "rgb(255,255,255)",
         cornerColor: "rgb(255,255,255)",
-        cornerStyle: "circle"
+        cornerStyle: "circle",
+        objectType: "box"
       });
       ref.current.add(box);
       box.center();

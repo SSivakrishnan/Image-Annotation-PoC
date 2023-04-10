@@ -3,16 +3,26 @@ import { Button, Popover } from 'antd';
 import { SketchPicker } from "react-color";
 import { useStore } from './image/store';
 
-function FloatingToolbar({objectType}) {
+function FloatingToolbar() {
 
     let activeObject = useStore((state)=>state.activeObject);
 
     const menuRef = useRef(null);
 
+    const [objectType, setObjectType] = useState('circle')
+
 
 
     useEffect(()=>{
-        console.log(":::::::::",activeObject?.top,menuRef)
+        console.log(":::::::::",typeof activeObject?.objectType,activeObject?.type)
+
+        if(activeObject?.type === 'group'){
+            setObjectType('arrow')
+        } else if(activeObject?.type === 'path') {
+            setObjectType('pen')
+        } else {
+            setObjectType(activeObject?.objectType || 'circle')
+        }
         if(menuRef.current){
             if (activeObject) {
                 menuRef.current.style.display = "flex";
@@ -25,14 +35,15 @@ function FloatingToolbar({objectType}) {
           
     },[activeObject,menuRef.current])
 
+    const DELETE_COMP = <Delete menuRef={menuRef}/>
     const objectList = {
-        pen:[<LineColor />, <LineWidth />, <Delete />],
-        rect:[<FillColor />, <LineColor />, <LineWidth />, <Delete />],
-        circle:[<FillColor />, <LineColor />, <LineWidth />, <Delete />],
-        line:[<LineColor />, <LineWidth />, <Delete />],
-        arrow:[<LineColor />, <LineWidth />, <Delete />],
-        highlighter:[<LineColor />, <LineWidth />, <Delete />],
-        text:[<FontSize />, <FontColor />, <BackgroundColor />, <Delete />]
+        pen:[<LineColor />, <LineWidth />, DELETE_COMP],
+        box:[<FillColor />, <LineColor />, <LineWidth />,DELETE_COMP],
+        circle:[<FillColor />, <LineColor />, <LineWidth />,DELETE_COMP],
+        line:[<LineColor />, <LineWidth />,DELETE_COMP],
+        arrow:[<LineColor />, <LineWidth />,DELETE_COMP],
+        highlighter:[<LineColor />, <LineWidth />,DELETE_COMP],
+        textbox:[<FontSize />, <FontColor />, <BackgroundColor />,DELETE_COMP]
     }
 
   return (
@@ -126,15 +137,20 @@ function LineWidth(){
     }
     </div>
 }
-function Delete(){
+
+
+function Delete({menuRef}){
     let {fabricCanvasRef,activeObject} = useStore((state)=>state);
 
     const deleteObject = () => {
  // activeObject.remove();
  fabricCanvasRef.current.remove(activeObject);
+ menuRef.current.style.display = "none";
     }
     return <button onClick={deleteObject}>Delete</button>
 }
+
+
 function FillColor(){
     let {fabricCanvasRef,activeObject} = useStore((state)=>state);
 
@@ -164,6 +180,8 @@ function FillColor(){
     }
     </div>
 }
+
+
 function FontSize(){
     let {fabricCanvasRef,activeObject} = useStore((state)=>state);
 
@@ -195,6 +213,8 @@ function FontSize(){
     }
     </div>
 }
+
+
 function FontColor(){
     let {fabricCanvasRef,activeObject} = useStore((state)=>state);
 
@@ -225,6 +245,8 @@ function FontColor(){
     }
     </div>
 }
+
+
 function BackgroundColor(){
     let {fabricCanvasRef,activeObject} = useStore((state)=>state);
 
@@ -234,8 +256,8 @@ function BackgroundColor(){
 
     const colorPicking = (color) =>{
         seBackgroundtColor(color.hex)
-        activeObject.set("stroke", color.hex);
-        activeObject.set("fill", color.hex);
+        activeObject.set("backgroundColor", color.hex);
+        //activeObject.set("fill", color.hex);
         fabricCanvasRef.current.renderAll();
     }
     return <div style={{position :'relative'}}>
