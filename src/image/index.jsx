@@ -11,6 +11,8 @@ export const ImageAnnotation = () => {
   
   let {setFabricCanvasRef ,setActiveObject}= useStore((state)=>state);
 
+  let canvasUrl = ''
+
   useEffect(
     ()=>{
       if(!canvasRef.current){
@@ -34,6 +36,17 @@ export const ImageAnnotation = () => {
 
   },[]);
 
+
+  function save(){
+    canvasUrl = canvas.toDataURL("image/jpeg", 1.0);
+  }
+
+  function download_img(){
+    let el = document.getElementById("download");
+    let imageURI = canvasUrl;
+    el.href = imageURI;
+  }
+
   return (
     <div style={{
       display:'flex',
@@ -42,6 +55,8 @@ export const ImageAnnotation = () => {
       <AnnotationToolbar />
       <canvas id="canvas"/>
       <FloatingToolbar/>
+      <button onClick={save}>Save</button>
+      <a download="myImage.jpg" id="download" href="" onClick={download_img}>Download</a>
       </div>
   )
 }
