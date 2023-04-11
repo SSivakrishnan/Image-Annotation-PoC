@@ -1,11 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useContext } from 'react'
 import { Button, Popover } from 'antd';
 import { SketchPicker } from "react-color";
 import { useStore } from './image/store';
+import { CanvasContext } from './image';
 
 function FloatingToolbar() {
 
-    let activeObject = useStore((state)=>state.activeObject);
+  let {activeObject} = useContext(CanvasContext);
+
+    // let activeObject = useStore((state)=>state.activeObject);
 
     const menuRef = useRef(null);
 
