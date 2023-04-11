@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {fabric} from 'fabric';
 import { useStore } from '../../../store';
+import { CanvasContext } from '../../..';
 
 export const Arrow = () => {
-  let ref = useStore((state)=>state.fabricCanvasRef);
-  const { setModifications} = useStore((state)=>state);
+  let {canvasRef,setModifications} = useContext(CanvasContext);
 
   function draw(){
-    console.info('===> drawing');
-    if(ref.current){
     var triangle = new fabric.Triangle({
       width: 10, 
       height: 15, 
@@ -29,10 +27,10 @@ export const Arrow = () => {
   var objs = [line, triangle];
 
   var alltogetherObj = new fabric.Group(objs);
-  ref.current.add(alltogetherObj);
+  canvasRef.current.add(alltogetherObj);
   setModifications()
   
-    }
+    
   }
   return (
  <button onClick={draw}>Arrow</button>   

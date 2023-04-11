@@ -1,25 +1,28 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
+import { CanvasContext } from "../..";
+
 import { useStore } from "../../store"
 export const Pen = () => {
   const [width, setWidth] = useState(1);
-  let ref = useStore((state)=>state.fabricCanvasRef);
-  const { setModifications} = useStore((state)=>state);
+  let {canvasRef,setModifications} = useContext(CanvasContext);
+  // let ref = useStore((state)=>state.fabricCanvasRef);
+
 
   function draw(){
-    if(ref){
-      console.info('===> drawing',ref.current)
-      ref.current.isDrawingMode= !ref.current.isDrawingMode;
-      ref.current.renderAll();
+    if(canvasRef){
+       console.info('===> drawing',canvasRef.current)
+      canvasRef.current.isDrawingMode= !canvasRef.current.isDrawingMode;
+      canvasRef.current.renderAll();
       setModifications()
     }
   }
 
   function setPenWidth(val){
-    console.info('===> width',ref.current)
-    if(ref){
-      ref.current.freeDrawingBrush.width=width;
+    console.info('===> width',canvasRef.current)
+    if(canvasRef){
+      canvasRef.current.freeDrawingBrush.width=width;
       setWidth(val);
-      ref.current.renderAll()
+      canvasRef.current.renderAll()
       setModifications()
     }
   }

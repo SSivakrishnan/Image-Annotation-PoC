@@ -1,11 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useContext } from 'react'
 import { Button, Popover } from 'antd';
 import { SketchPicker } from "react-color";
 import { useStore } from './image/store';
+import { CanvasContext } from './image';
 
 function FloatingToolbar() {
 
-    let activeObject = useStore((state)=>state.activeObject);
+  const {activeObj} = useContext(CanvasContext);
+
+  console.log("activeObj",activeObj);
+
 
     const menuRef = useRef(null);
 
@@ -14,26 +18,31 @@ function FloatingToolbar() {
 
 
     useEffect(()=>{
-        console.log(":::::::::",typeof activeObject?.objectType,activeObject?.type)
+        console.log(":::::::::", activeObj?.objectType,activeObj)
 
-        if(activeObject?.type === 'group'){
+        if(activeObj?.type === 'group'){
             setObjectType('arrow')
-        } else if(activeObject?.type === 'path') {
+        } else if(activeObj?.type === 'path') {
             setObjectType('pen')
         } else {
-            setObjectType(activeObject?.objectType || 'circle')
+            console.log(":::::elseee")
+            setObjectType(activeObj?.objectType || 'multiobject')
         }
         if(menuRef.current){
-            if (activeObject) {
+             if(activeObj?._objects?.length>0){
                 menuRef.current.style.display = "flex";
-                menuRef.current.style.top = `${activeObject.top}px`;
-                menuRef.current.style.left = `${activeObject.left - 150}px`;
+                menuRef.current.style.top = `100px`;
+                menuRef.current.style.left = `150px`;
+              }else if (activeObj) {
+                menuRef.current.style.display = "flex";
+                menuRef.current.style.top = `${activeObj.top}px`;
+                menuRef.current.style.left = `${activeObj.left - 150}px`;
               } else {
                 menuRef.current.style.display = "none";
               }
         }
           
-    },[activeObject,menuRef.current])
+    },[activeObj,menuRef.current])
 
     const DELETE_COMP = <Delete menuRef={menuRef}/>
     const objectList = {
@@ -43,7 +52,8 @@ function FloatingToolbar() {
         line:[<LineColor />, <LineWidth />,DELETE_COMP],
         arrow:[<LineColor />, <LineWidth />,DELETE_COMP],
         highlighter:[<LineColor />, <LineWidth />,DELETE_COMP],
-        textbox:[<FontSize />, <FontColor />, <BackgroundColor />,DELETE_COMP]
+        textbox:[<FontSize />, <FontColor />, <BackgroundColor />,DELETE_COMP],
+        multiobject:[DELETE_COMP]
     }
 
   return (
@@ -55,7 +65,7 @@ function FloatingToolbar() {
           padding: 10,
           gap: "0.5rem",
           position: "absolute",
-        //  display: "none"
+          display: "none"
         }}>
         <div style={{ display:'flex'}}>{
         objectList[objectType].map(comp => (
@@ -72,22 +82,22 @@ function FloatingToolbar() {
 export default FloatingToolbar
 
 function LineColor(){
-    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
+    const {canvasRef,activeObj,setModifications} = useContext(CanvasContext);
     const [selectedColor,setSelectedColor] = useState()
 
     const [open,setOpen] = useState(false)
 
     const colorPicking = (color) =>{
         setSelectedColor(color.hex);
-     if (activeObject.get("type") === "group") {
-        activeObject._objects.map((obj) => {
+     if (activeObj.get("type") === "group") {
+        activeObj._objects.map((obj) => {
           obj.set("stroke", color.hex);
           obj.set("fill", color.hex);
         });
       } else {
-        activeObject.set("stroke", color.hex);
+        activeObj.set("stroke", color.hex);
       }
-      fabricCanvasRef.current.renderAll();
+      canvasRef.current.renderAll();
       setModifications()
     }
     return <div style={{position :'relative'}}>
@@ -108,7 +118,7 @@ function LineColor(){
     </div>
 }
 function LineWidth(){
-    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
+    const {canvasRef,activeObj,setModifications} = useContext(CanvasContext);
 
     const [lineWidth,setLineWidth] = useState(1)
 
@@ -116,8 +126,8 @@ function LineWidth(){
 
     const handleFontSizeChange = (e) =>{
         setLineWidth(Number(e.target.value))
-       activeObject.set("strokeWidth", Number(e.target.value));
-       fabricCanvasRef.current.renderAll();
+       activeObj.set("strokeWidth", Number(e.target.value));
+       canvasRef.current.renderAll();
        setModifications()
     }
     return <div style={{position :'relative'}}>
@@ -141,11 +151,19 @@ function LineWidth(){
 
 
 function Delete({menuRef}){
-    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
+    const {canvasRef,activeObj,setModifications} = useContext(CanvasContext);
 
     const deleteObject = () => {
- // activeObject.remove();
- fabricCanvasRef.current.remove(activeObject);
+ // activeObj.remove();
+ if(activeObj?._objects?.length>0){
+    activeObj._objects.forEach(obj=>{
+        canvasRef.current.remove(obj);
+    })  
+    // canvasRef.current.remove(activeObj);
+ }else{
+    canvasRef.current.remove(activeObj);
+ }
+
  menuRef.current.style.display = "none";
  setModifications()
     }
@@ -154,7 +172,7 @@ function Delete({menuRef}){
 
 
 function FillColor(){
-    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
+    const {canvasRef,activeObj,setModifications} = useContext(CanvasContext);
 
     const [open,setOpen] = useState(false)
 
@@ -162,8 +180,8 @@ function FillColor(){
 
     const colorPicking = (color) =>{
         setFillColor(color.hex);
-        activeObject.set("fill", color.hex);
-        fabricCanvasRef.current.renderAll();
+        activeObj.set("fill", color.hex);
+        canvasRef.current.renderAll();
         setModifications()
     }
     return <div style={{position :'relative'}}>
@@ -186,7 +204,7 @@ function FillColor(){
 
 
 function FontSize(){
-    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
+    const {canvasRef,activeObj,setModifications} = useContext(CanvasContext);
 
 
     const [open,setOpen] = useState(false)
@@ -195,8 +213,8 @@ function FontSize(){
 
     const handleFontSizeChange = (e) =>{
         setfontSize(Number(e.target.value))
-        activeObject.set("fontSize", Number(e.target.value));
-        fabricCanvasRef.current.renderAll();
+        activeObj.set("fontSize", Number(e.target.value));
+        canvasRef.current.renderAll();
         setModifications()
     }
     return <div style={{position :'relative'}}>
@@ -220,7 +238,7 @@ function FontSize(){
 
 
 function FontColor(){
-    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
+    const {canvasRef,activeObj,setModifications} = useContext(CanvasContext);
 
     const [open,setOpen] = useState(false)
 
@@ -228,9 +246,9 @@ function FontColor(){
 
     const colorPicking = (color) =>{
         setFontColor(color.hex)
-        activeObject.set("stroke", color.hex);
-        activeObject.set("fill", color.hex);
-        fabricCanvasRef.current.renderAll();
+        activeObj.set("stroke", color.hex);
+        activeObj.set("fill", color.hex);
+        canvasRef.current.renderAll();
         setModifications()
     }
     return <div style={{position :'relative'}}>
@@ -253,7 +271,7 @@ function FontColor(){
 
 
 function BackgroundColor(){
-    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
+    const {canvasRef,activeObj,setModifications} = useContext(CanvasContext);
 
     const [open,setOpen] = useState(false)
 
@@ -261,9 +279,9 @@ function BackgroundColor(){
 
     const colorPicking = (color) =>{
         seBackgroundtColor(color.hex)
-        activeObject.set("backgroundColor", color.hex);
-        //activeObject.set("fill", color.hex);
-        fabricCanvasRef.current.renderAll();
+        activeObj.set("backgroundColor", color.hex);
+        //activeObj.set("fill", color.hex);
+        canvasRef.current.renderAll();
         setModifications()
     }
     return <div style={{position :'relative'}}>

@@ -1,15 +1,15 @@
-import React from 'react'
-import { useStore } from '../../store';
+import React, { useContext } from 'react'
+import { CanvasContext } from '../..';
 
 function Redo({currentMod,setCurrentMod}) {
-    let {fabricCanvasRef,modifications} = useStore((state)=>state);
+  let {canvasRef,modifications} = useContext(CanvasContext);
 
     const redo = () => {
         // console.log("setCurrentMod",)
         if(currentMod > 0){
-            fabricCanvasRef.current.remove(...fabricCanvasRef.current.getObjects());
-            fabricCanvasRef.current.loadFromJSON(modifications[modifications.length - currentMod])
-            fabricCanvasRef.current.renderAll()
+            canvasRef.current.remove(...canvasRef.current.getObjects());
+            canvasRef.current.loadFromJSON(modifications[modifications.length - currentMod])
+            canvasRef.current.renderAll()
             setCurrentMod(prev=>prev-1)
         }
        

@@ -1,15 +1,17 @@
-import React from 'react'
-import { useStore } from '../../store';
+import React, { useContext } from 'react'
+import { CanvasContext } from '../..';
 
 function Undo({currentMod,setCurrentMod}) {
-    let {fabricCanvasRef,modifications} = useStore((state)=>state);
+    let {canvasRef,modifications} = useContext(CanvasContext);
+
+    console.log("modifications",modifications)
 
     const undo = () => {
-        console.log("setCurrentMod",fabricCanvasRef.current.getObjects(),modifications[modifications.length - 1 - currentMod])
+        console.log("setCurrentMod",canvasRef.current.getObjects(),modifications[modifications.length - 1 - currentMod])
         if(currentMod < modifications.length){
-            fabricCanvasRef.current.remove(...fabricCanvasRef.current.getObjects());
-            fabricCanvasRef.current.loadFromJSON(modifications[modifications.length - currentMod - 2])
-            fabricCanvasRef.current.renderAll()
+            canvasRef.current.remove(...canvasRef.current.getObjects());
+            canvasRef.current.loadFromJSON(modifications[modifications.length - currentMod - 2])
+            canvasRef.current.renderAll()
             setCurrentMod(prev=>prev+1)
         }
        

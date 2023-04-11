@@ -1,12 +1,12 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import { fabric } from "fabric";
-import { useStore } from "../../../store"
+import { CanvasContext } from "../../..";
+
 export const Square = () => {
-  let ref = useStore((state)=>state.fabricCanvasRef);
-  const { setModifications} = useStore((state)=>state);
+  let {canvasRef,setModifications} = useContext(CanvasContext);
 
   function draw(){
-    if(ref.current){
+    if(canvasRef.current){
       const box = new fabric.Rect({
         width: 100,
         height: 100,
@@ -21,7 +21,7 @@ export const Square = () => {
         cornerStyle: "circle",
         objectType: "box"
       });
-      ref.current.add(box);
+      canvasRef.current.add(box);
       box.center();
       box.setCoords();
       setModifications()

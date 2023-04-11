@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {fabric} from 'fabric';
 import { useStore } from '../../../store';
+import { CanvasContext } from '../../..';
 
 export const Line = () => {
-  let ref = useStore((state)=>state.fabricCanvasRef);
-  const { setModifications} = useStore((state)=>state);
+  let {canvasRef,setModifications} = useContext(CanvasContext);
 
   function draw(){
     
@@ -17,7 +17,7 @@ export const Line = () => {
   });
 
   
-  ref.current.add(line);
+  canvasRef.current.add(line);
   setModifications()
     }
   

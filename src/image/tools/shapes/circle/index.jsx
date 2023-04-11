@@ -1,14 +1,12 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import { fabric } from "fabric";
-import { useStore } from "../../../store"
+import { CanvasContext } from "../../..";
 export const Circle = () => {
-  let ref = useStore((state)=>state.fabricCanvasRef);
-  const { setModifications} = useStore((state)=>state);
-
-  // console.log('modifications',modifications)
+  // const { setModifications} = useStore((state)=>state);
+  let {canvasRef,setModifications} = useContext(CanvasContext);
 
   function draw(){
-    if(ref.current){
+    if(canvasRef.current){
       var object = new fabric.Circle({
         top: 0,
         left: 50,
@@ -22,7 +20,7 @@ export const Circle = () => {
         cornerStyle: "circle",
         objectType: "circle"
       });
-      ref.current.add(object); 
+      canvasRef.current.add(object); 
       object.center();
       object.setCoords();
       setModifications()
