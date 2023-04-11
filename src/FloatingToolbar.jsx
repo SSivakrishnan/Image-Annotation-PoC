@@ -72,7 +72,7 @@ function FloatingToolbar() {
 export default FloatingToolbar
 
 function LineColor(){
-    let {fabricCanvasRef,activeObject} = useStore((state)=>state);
+    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
     const [selectedColor,setSelectedColor] = useState()
 
     const [open,setOpen] = useState(false)
@@ -88,7 +88,7 @@ function LineColor(){
         activeObject.set("stroke", color.hex);
       }
       fabricCanvasRef.current.renderAll();
-    
+      setModifications()
     }
     return <div style={{position :'relative'}}>
     <button onClick={()=>{setOpen(!open)}}>LineColor</button>
@@ -108,7 +108,7 @@ function LineColor(){
     </div>
 }
 function LineWidth(){
-    let {fabricCanvasRef,activeObject} = useStore((state)=>state);
+    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
 
     const [lineWidth,setLineWidth] = useState(1)
 
@@ -118,6 +118,7 @@ function LineWidth(){
         setLineWidth(Number(e.target.value))
        activeObject.set("strokeWidth", Number(e.target.value));
        fabricCanvasRef.current.renderAll();
+       setModifications()
     }
     return <div style={{position :'relative'}}>
     <button onClick={()=>{setOpen(!open)}}>LineWidth</button>
@@ -140,19 +141,20 @@ function LineWidth(){
 
 
 function Delete({menuRef}){
-    let {fabricCanvasRef,activeObject} = useStore((state)=>state);
+    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
 
     const deleteObject = () => {
  // activeObject.remove();
  fabricCanvasRef.current.remove(activeObject);
  menuRef.current.style.display = "none";
+ setModifications()
     }
     return <button onClick={deleteObject}>Delete</button>
 }
 
 
 function FillColor(){
-    let {fabricCanvasRef,activeObject} = useStore((state)=>state);
+    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
 
     const [open,setOpen] = useState(false)
 
@@ -162,6 +164,7 @@ function FillColor(){
         setFillColor(color.hex);
         activeObject.set("fill", color.hex);
         fabricCanvasRef.current.renderAll();
+        setModifications()
     }
     return <div style={{position :'relative'}}>
     <button onClick={()=>{setOpen(!open)}}>FillColor</button>
@@ -183,7 +186,7 @@ function FillColor(){
 
 
 function FontSize(){
-    let {fabricCanvasRef,activeObject} = useStore((state)=>state);
+    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
 
 
     const [open,setOpen] = useState(false)
@@ -194,6 +197,7 @@ function FontSize(){
         setfontSize(Number(e.target.value))
         activeObject.set("fontSize", Number(e.target.value));
         fabricCanvasRef.current.renderAll();
+        setModifications()
     }
     return <div style={{position :'relative'}}>
     <button onClick={()=>{setOpen(!open)}}>FontSize</button>
@@ -216,7 +220,7 @@ function FontSize(){
 
 
 function FontColor(){
-    let {fabricCanvasRef,activeObject} = useStore((state)=>state);
+    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
 
     const [open,setOpen] = useState(false)
 
@@ -227,6 +231,7 @@ function FontColor(){
         activeObject.set("stroke", color.hex);
         activeObject.set("fill", color.hex);
         fabricCanvasRef.current.renderAll();
+        setModifications()
     }
     return <div style={{position :'relative'}}>
     <button onClick={()=>{setOpen(!open)}}>FontColor</button>
@@ -248,7 +253,7 @@ function FontColor(){
 
 
 function BackgroundColor(){
-    let {fabricCanvasRef,activeObject} = useStore((state)=>state);
+    let {fabricCanvasRef,activeObject,setModifications} = useStore((state)=>state);
 
     const [open,setOpen] = useState(false)
 
@@ -259,6 +264,7 @@ function BackgroundColor(){
         activeObject.set("backgroundColor", color.hex);
         //activeObject.set("fill", color.hex);
         fabricCanvasRef.current.renderAll();
+        setModifications()
     }
     return <div style={{position :'relative'}}>
     <button onClick={()=>{setOpen(!open)}}>BackgroundColor</button>

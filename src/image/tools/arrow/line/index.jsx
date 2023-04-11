@@ -4,6 +4,7 @@ import { useStore } from '../../../store';
 
 export const Line = () => {
   let ref = useStore((state)=>state.fabricCanvasRef);
+  const { setModifications} = useStore((state)=>state);
 
   function draw(){
     
@@ -17,6 +18,7 @@ export const Line = () => {
 
   
   ref.current.add(line);
+  setModifications()
     }
   
   return (

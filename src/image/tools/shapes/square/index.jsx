@@ -3,7 +3,7 @@ import { fabric } from "fabric";
 import { useStore } from "../../../store"
 export const Square = () => {
   let ref = useStore((state)=>state.fabricCanvasRef);
-
+  const { setModifications} = useStore((state)=>state);
 
   function draw(){
     if(ref.current){
@@ -24,6 +24,7 @@ export const Square = () => {
       ref.current.add(box);
       box.center();
       box.setCoords();
+      setModifications()
     }
   }
 

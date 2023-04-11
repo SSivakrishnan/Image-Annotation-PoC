@@ -4,6 +4,7 @@ import { useStore } from '../../../store';
 
 export const Arrow = () => {
   let ref = useStore((state)=>state.fabricCanvasRef);
+  const { setModifications} = useStore((state)=>state);
 
   function draw(){
     console.info('===> drawing');
@@ -29,6 +30,8 @@ export const Arrow = () => {
 
   var alltogetherObj = new fabric.Group(objs);
   ref.current.add(alltogetherObj);
+  setModifications()
+  
     }
   }
   return (

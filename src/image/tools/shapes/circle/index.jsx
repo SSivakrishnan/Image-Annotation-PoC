@@ -3,7 +3,9 @@ import { fabric } from "fabric";
 import { useStore } from "../../../store"
 export const Circle = () => {
   let ref = useStore((state)=>state.fabricCanvasRef);
+  const { setModifications} = useStore((state)=>state);
 
+  // console.log('modifications',modifications)
 
   function draw(){
     if(ref.current){
@@ -23,6 +25,7 @@ export const Circle = () => {
       ref.current.add(object); 
       object.center();
       object.setCoords();
+      setModifications()
     }
   }
 

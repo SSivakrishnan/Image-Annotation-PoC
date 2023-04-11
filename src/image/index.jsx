@@ -3,6 +3,7 @@ import { fabric } from 'fabric';
 import { AnnotationToolbar } from './tools';
 import { useStore } from './store';
 import FloatingToolbar from '../FloatingToolbar';
+import Toolbar from './toolbar';
 
 export const ImageAnnotation = () => {
   const canvasRef = useRef(null);
@@ -39,6 +40,7 @@ export const ImageAnnotation = () => {
 
   function save(){
     canvasUrl = canvas.toDataURL("image/jpeg", 1.0);
+    console.log("canvasUrl", canvas);
   }
 
   function download_img(){
@@ -54,6 +56,7 @@ export const ImageAnnotation = () => {
     }}>
       <AnnotationToolbar />
       <canvas id="canvas"/>
+      <Toolbar/>
       <FloatingToolbar/>
       <button onClick={save}>Save</button>
       <a download="myImage.jpg" id="download" href="" onClick={download_img}>Download</a>
