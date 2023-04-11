@@ -1,8 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, createContext} from 'react';
 import { fabric } from 'fabric';
 import { AnnotationToolbar } from './tools';
 import { useStore } from './store';
 import FloatingToolbar from '../FloatingToolbar';
+
+export const CanvasContext = createContext("canvas");
 
 export const ImageAnnotation = () => {
   const canvasRef = useRef(null);
@@ -11,7 +13,8 @@ export const ImageAnnotation = () => {
   
   let {setFabricCanvasRef ,setActiveObject}= useStore((state)=>state);
 
-  let canvasUrl = ''
+  let canvasUrl = '';
+  let activeObj = {};
 
   useEffect(
     ()=>{
@@ -22,7 +25,7 @@ export const ImageAnnotation = () => {
 
 
         canvasRef.current.on("mouse:up", (e) => {
-          // let active = canvasRef.current?.getActiveObject();
+          activeObj = canvasRef.current?.getActiveObject();
           setActiveObject(canvasRef.current?.getActiveObject())
            if(e.target?.type === "group"){
             console.log('canvasRef', e.target?._objects)
@@ -48,6 +51,7 @@ export const ImageAnnotation = () => {
   }
 
   return (
+    <CanvasContext.Provider value={{activeObj, setActiveObject, canvasRef, setFabricCanvasRef}}>
     <div style={{
       display:'flex',
       flexDirection:'column'
@@ -58,5 +62,6 @@ export const ImageAnnotation = () => {
       <button onClick={save}>Save</button>
       <a download="myImage.jpg" id="download" href="" onClick={download_img}>Download</a>
       </div>
+      </CanvasContext.Provider>
   )
 }
